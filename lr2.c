@@ -26,7 +26,7 @@ int main(){
      if (!pid) { // child branch
        if (STDOUT_Forward!=0) { 
           int fd_out = open(argv[STDOUT_Forward], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-          if (fd == -1) {
+          if (fd_out == -1) {
                  perror("open");
                  return EXIT_FAILURE;
            }
@@ -42,7 +42,7 @@ int main(){
             perror("open");
             return EXIT_FAILURE;
          }
-         if (-1 == dup2(fd1, STDIN_FILENO)) {
+         if (-1 == dup2(fd_in, STDIN_FILENO)) {
            perror("dup2");
            return EXIT_FAILURE;
          }
