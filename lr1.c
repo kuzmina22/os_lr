@@ -4,22 +4,34 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int main(){
- int i, j, c, in; 
- char argvp[16][80];
- char* argv[16];
- printf("$"); 
- i=0; j=0; in=0;
- while ((c=getchar())!=EOF) {
-   if (c==' ' || c=='\n') {
-     if (in==1) {in=0; argvp[i][j]='\0'; argv[i]=&argvp[i]; ++i; j=0;}          
-   } else {argvp[i][j]=c; ++j; in=1;};        
- 
+#define MAX_WORDS 16
+#define MAX_WORD_LEN 80
+
+int main() {
+ char argvp[MAX_WORDS][MAX_WORD_LEN];
+ int i = 0; 
+ int j = 0; 
+ int in = 0;
+ int c;
+ printf("$");
+ while ((c = getchar())!=EOF) {
+   if (isspace(c)) {
+     if (in == 1) {
+       in = 0; 
+       argvp[i][j] = '\0'; 
+       ++i; 
+       j = 0;
+     }          
+   } else {
+       argvp[i][j] = c; 
+       ++j; 
+       in = 1;
+     }        
    if (c=='\n') {
      argv[i]=NULL;
      pid_t pid = fork();
      if (!pid) { // child branch
-       int rv = execvp(argv[0], argv);
+       int rv = execvp(&argvp[0], &argvp);
        if (rv == -1) {
          perror("execvp");
          return EXIT_FAILURE;
@@ -31,10 +43,11 @@ int main(){
        perror("wait");
        return EXIT_FAILURE;
      }
-     i=0; j=0; in=0;
+     i = 0; 
+     j = 0; 
+     in = 0;
      printf("$");
    }
  }
- printf("\n");
  return EXIT_SUCCESS;
 }
