@@ -31,7 +31,7 @@ int main() {
        in = 1;
      }        
    if (c=='\n') {
-     argv[i]=NULL;
+     argvp[i]=NULL;
      pid_t pid = fork();
      if (!pid) { // child branch
        int rv = execvp(&argvp[0], &argvp);
