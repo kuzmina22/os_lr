@@ -18,7 +18,7 @@ int main() {
  int in = 0;
  int c;
  printf("$");
- while ((c = getchar())!=EOF) {
+ while ((c = getchar()) != EOF) {
    if (isspace(c)) {
      if (in == 1) {
        in = 0; 
