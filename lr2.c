@@ -13,6 +13,7 @@
 
 int main() {
  char argvp[MAX_WORDS][MAX_WORD_LEN];
+ char* argv[MAX_WORDS];
  int i = 0; 
  int j = 0; 
  int in = 0; 
@@ -20,11 +21,12 @@ int main() {
  int STDIN_Forward = 0; 
  printf("$");
  int c;
- while ((c = getchar())!=EOF) {
+ while ((c = getchar()) != EOF) {
    if (c == ' ' || c == '\n' || c == '>' || c == '<') {
      if (in == 1) {
        in = 0; 
        argvp[i][j] = '\0'; 
+       argv[i] = argvp[i];
        ++i; 
        j = 0;
      }          
@@ -39,12 +41,12 @@ int main() {
    if ( c== '<') {
      STDIN_Forward = i;
    }
-   if ( c== '\n') {
-     argvp[i] = NULL;
+   if (c == '\n') {
+     argv[i] = NULL;
      pid_t pid = fork();
      if (!pid) { // child branch
        if (STDOUT_Forward != 0) { 
-         int fd_out = open(&argvp[STDOUT_Forward], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+         int fd_out = open(argv[STDOUT_Forward], O_WRONLY | O_CREAT | O_TRUNC, 0666);
          if (fd_out == -1) {
            perror("open");
            return EXIT_FAILURE;
@@ -53,10 +55,10 @@ int main() {
            perror("dup2");
            return EXIT_FAILURE;
          }
-         argvp[STDOUT_Forward]=NULL;
+         argv[STDOUT_Forward]=NULL;
        }
        if (STDIN_Forward != 0) { 
-         int fd_in = open(&argvp[STDIN_Forward], O_RDONLY);
+         int fd_in = open(argv[STDIN_Forward], O_RDONLY);
          if (fd_in == -1) {
            perror("open");
            return EXIT_FAILURE;
@@ -65,9 +67,9 @@ int main() {
            perror("dup2");
            return EXIT_FAILURE;
          }
-         argvp[STDIN_Forward]=NULL;
+         argv[STDIN_Forward]=NULL;
        }
-       int rv = execvp(&argvp[0], &argvp);
+       int rv = execvp(argv[0], argv);
        if (rv == -1) {
           perror("execvp");
           return EXIT_FAILURE;
