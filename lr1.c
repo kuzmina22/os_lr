@@ -12,6 +12,7 @@
 
 int main() {
  char argvp[MAX_WORDS][MAX_WORD_LEN];
+ char* argv[MAX_WORDS]
  int i = 0; 
  int j = 0; 
  int in = 0;
@@ -21,7 +22,8 @@ int main() {
    if (isspace(c)) {
      if (in == 1) {
        in = 0; 
-       argvp[i][j] = '\0'; 
+       argvp[i][j] = '\0';
+       argv[i] = argvp[i];
        ++i; 
        j = 0;
      }          
@@ -30,11 +32,11 @@ int main() {
        ++j; 
        in = 1;
      }        
-   if (c=='\n') {
-     argvp[i]=NULL;
+   if (c == '\n') {
+     argv[i] = NULL;
      pid_t pid = fork();
      if (!pid) { // child branch
-       int rv = execvp(&argvp[0], &argvp);
+       int rv = execvp(argv[0], argv);
        if (rv == -1) {
          perror("execvp");
          return EXIT_FAILURE;
