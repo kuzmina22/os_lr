@@ -18,9 +18,9 @@ int main() {
  int j = 0; 
  int in = 0; 
  int STDOUT_Forward = 0; 
- int STDIN_Forward = 0; 
- printf("$");
+ int STDIN_Forward = 0;
  int c;
+ printf("$");
  while ((c = getchar()) != EOF) {
    if (c == ' ' || c == '\n' || c == '>' || c == '<') {
      if (in == 1) {
@@ -34,7 +34,7 @@ int main() {
       argvp[i][j] = c; 
       ++j; 
       in = 1;
-     }        
+   }        
    if (c == '>') {
      STDOUT_Forward = i;
    }
@@ -55,7 +55,7 @@ int main() {
            perror("dup2");
            return EXIT_FAILURE;
          }
-         argv[STDOUT_Forward]=NULL;
+         argv[STDOUT_Forward] = NULL;
        }
        if (STDIN_Forward != 0) { 
          int fd_in = open(argv[STDIN_Forward], O_RDONLY);
@@ -67,7 +67,7 @@ int main() {
            perror("dup2");
            return EXIT_FAILURE;
          }
-         argv[STDIN_Forward]=NULL;
+         argv[STDIN_Forward] = NULL;
        }
        int rv = execvp(argv[0], argv);
        if (rv == -1) {
@@ -83,7 +83,6 @@ int main() {
      }
      i = 0; 
      j = 0; 
-     in = 0; 
      STDOUT_Forward = 0; 
      STDIN_Forward = 0;
      printf("$");
