@@ -11,6 +11,14 @@
 #define MAX_WORDS 16
 #define MAX_WORD_LEN 80
 
+int is_punctuation (int a) { 
+  int p = 0; 
+  if (iscpace(a) || a == '>' || a == '<') { 
+    p = 1; 
+  } 
+  return p; 
+}
+
 int main() {
  char argvp[MAX_WORDS][MAX_WORD_LEN];
  char* argv[MAX_WORDS];
@@ -22,7 +30,7 @@ int main() {
  int c;
  printf("$");
  while ((c = getchar()) != EOF) {
-   if (c == ' ' || c == '\n' || c == '>' || c == '<') {
+   if (is_punctuation(c)) {
      if (in == 1) {
        in = 0; 
        argvp[i][j] = '\0'; 
