@@ -5,24 +5,48 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int main(){
- int i, j, c, in, STDOUT_Forward, STDIN_Forward, sh;
- int fildes[2]; 
- char argvp[16][80];
- char* argv[16];
- printf("$"); 
- i=0; j=0; in=0; 
- STDOUT_Forward=0; STDIN_Forward=0; 
- sh=0;
- while ((c=getchar())!=EOF) {
-   if (c==' ' || c=='\n' || c=='>' || c=='<' || c=='|') {
-      if (in==1) {in=0; argvp[i][j]='\0'; argv[i]=&argvp[i]; ++i; j=0;}          
-   } else {argvp[i][j]=c; ++j; in=1;};        
-   
-   if (c=='|') {sh=i; argv[sh]=NULL; ++i;};
+#define MAX_WORDS 16
+#define MAX_WORD_LEN  80
 
-   if (c=='\n') {
-     argv[i]=NULL;
+int is_punctuation (int a) { 
+  int p = 0; 
+  if (iscpace(a) || a == '>' || a == '<' || a == '|') { 
+    p = 1; 
+  } 
+  return p; 
+}
+
+int main() {
+ int fildes[2]; 
+ char argvp[MAX_WORDS][MAX_WORD_LEN];
+ char* argv[MAX_WORDS];
+ int i = 0;
+ int j = 0; 
+ int in = 0; 
+ int sh = 0;
+ int c;
+ printf("$");
+ while ((c = getchar()) != EOF) {
+   if (is_punctuation(c)) {
+     if (in == 1) {
+       in = 0;
+       argvp[i][j] = '\0'; 
+       argv[i] = argvp[i]; 
+       ++i; 
+       j = 0;
+     }          
+   } else {
+       argvp[i][j] = c; 
+       ++j; 
+       in = 1;
+   }        
+   if (c == '|') {
+     sh = i; 
+     argv[sh] = NULL; 
+     ++i;
+   }
+   if (c == '\n') {
+     argv[i] = NULL;
      pipe(fildes);
      pid_t pid1 = fork();
      if (!pid1) { // child1 branch
@@ -63,12 +87,11 @@ int main(){
      }
      close (fildes[0]);
      close (fildes[1]);
-     i=0; j=0; in=0; 
-     STDOUT_Forward=0; STDIN_Forward=0; 
-     sh=0;
+     i = 0; 
+     j = 0; 
+     sh = 0;
      printf("$");
    }
  }
- printf("\n");
  return EXIT_SUCCESS;
 }
