@@ -31,7 +31,7 @@ int main() {
        argvp[i][j] = c; 
        ++j; 
        in = 1;
-     }        
+   }        
    if (c == '\n') {
      argv[i] = NULL;
      pid_t pid = fork();
@@ -50,7 +50,6 @@ int main() {
      }
      i = 0; 
      j = 0; 
-     in = 0;
      printf("$");
    }
  }
