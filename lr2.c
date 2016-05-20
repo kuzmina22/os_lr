@@ -1,6 +1,4 @@
-/* The program that implements the basic shell functionality by generating a new process (system call "fork") 
-and launching command's program inputted by user in it using the system call "execvp"
-*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
