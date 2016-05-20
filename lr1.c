@@ -1,5 +1,5 @@
-/*программа, реализующая базовый функционал оболочки путем порождения нового процесса (системный вызов fork) 
-и запуска в нем программы команды, введенной пользователем с помощью системного вызова execvp.
+/*The program that implements the basic shell functionality by generating a new process (system call "fork") 
+and launching command's program in it inputted by user using the system call "execvp"
 */
 #include <stdio.h>
 #include <stdlib.h>
