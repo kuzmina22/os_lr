@@ -1,4 +1,5 @@
-
+/* the program that implements the basic shell functionality and redirect Input/Output using system calls open and dup2
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
