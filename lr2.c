@@ -11,11 +11,7 @@
 #define MAX_WORD_LEN 80
 
 int is_punctuation (int a) { 
-  int p = 0; 
-  if (iscpace(a) || a == '>' || a == '<') { 
-    p = 1; 
-  } 
-  return p; 
+  return iscpace(a) || a == '>' || a == '<'; 
 }
 
 int main() {
@@ -52,7 +48,7 @@ int main() {
      argv[i] = NULL;
      pid_t pid = fork();
      if (!pid) { // child branch
-       if (STDOUT_Forward != 0) { 
+       if (STDOUT_Forward) { 
          int fd_out = open(argv[STDOUT_Forward], O_WRONLY | O_CREAT | O_TRUNC, 0666);
          if (fd_out == -1) {
            perror("open");
@@ -64,7 +60,7 @@ int main() {
          }
          argv[STDOUT_Forward] = NULL;
        }
-       if (STDIN_Forward != 0) { 
+       if (STDIN_Forward) { 
          int fd_in = open(argv[STDIN_Forward], O_RDONLY);
          if (fd_in == -1) {
            perror("open");
