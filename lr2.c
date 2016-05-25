@@ -10,7 +10,7 @@
 #define MAX_WORDS 16
 #define MAX_WORD_LEN 80
 
-int is_punctuation (int a) { 
+int is_punctuation(int a) { 
   return iscpace(a) || a == '>' || a == '<'; 
 }
 
