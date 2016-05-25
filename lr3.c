@@ -8,7 +8,7 @@
 #define MAX_WORDS 16
 #define MAX_WORD_LEN  80
 
-int is_punctuation (int a) { 
+int is_punctuation(int a) { 
   return iscpace(a) || a == '>' || a == '<' || a == '|'; 
 }
 
@@ -43,7 +43,10 @@ int main() {
    }
    if (c == '\n') {
      argv[i] = NULL;
-     pipe(fildes);
+     if (pipe(fildes) == -1){
+       perror("pipe");
+       return EXIT_FAILURE;
+     }
      pid_t pid1 = fork();
      if (!pid1) { // child1 branch
        close (fildes[0]); 
