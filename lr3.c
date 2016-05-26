@@ -16,10 +16,12 @@ int main() {
  int fildes[2]; 
  char argvp[MAX_WORDS][MAX_WORD_LEN];
  char* argv[MAX_WORDS];
+ char* argv1[MAX_WORDS];
+ char* argv2[MAX_WORDS];
  int i = 0;
  int j = 0; 
  int in = 0; 
- int sh = 0;
+ int pi = 0;
  int c;
  printf("$");
  while ((c = getchar()) != EOF) {
@@ -37,12 +39,18 @@ int main() {
        in = 1;
    }        
    if (c == '|') {
-     sh = i; 
-     argv[sh] = NULL; 
+     pi = i; 
+     argv[pi] = NULL; 
      ++i;
    }
    if (c == '\n') {
      argv[i] = NULL;
+     for (int j = 0; j < pi; j++){
+      argv1[j] = argv[j]; 
+     }
+     for (int j = 0; j < i-pi-1; j++){
+      argv2[j] = argv[j+pi+1]; 
+     }
      if (pipe(fildes) == -1){
        perror("pipe");
        return EXIT_FAILURE;
@@ -54,7 +62,7 @@ int main() {
           perror("dup2");
           return EXIT_FAILURE;
        }
-       int rv = execvp(argv[0], argv);
+       int rv = execvp(argv1[0], argv1);
        if (rv == -1) {
           perror("execvp");
           return EXIT_FAILURE;
@@ -67,7 +75,7 @@ int main() {
           perror("dup2");
           return EXIT_FAILURE;
        }
-       int rv = execvp(argv[sh+1], argv);
+       int rv = execvp(argv2[0], argv2);
        if (rv == -1) {
           perror("execvp");
           return EXIT_FAILURE;
@@ -88,7 +96,7 @@ int main() {
      close (fildes[1]);
      i = 0; 
      j = 0; 
-     sh = 0;
+     pi = 0;
      printf("$");
    }
  }
