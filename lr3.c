@@ -9,7 +9,7 @@
 #define MAX_WORD_LEN  80
 
 int is_punctuation(int a) { 
-  return iscpace(a) || a == '>' || a == '<' || a == '|'; 
+  return isspace(a) || a == '>' || a == '<' || a == '|'; 
 }
 
 int main() {
